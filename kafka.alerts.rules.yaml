@@ -154,7 +154,7 @@ groups:
         description: 'There are {{ $value }} offline log directoris on {{ $labels.instance }}.'
 
     - alert: Topic Count
-      expr: count(count by (topic,instance) (rate(kafka_server_brokertopicmetrics_messagesinpersec{job="kafka"}[5m]))) by (instance)
+      expr: count(count by (topic,instance) (rate(kafka_server_brokertopicmetrics_messagesinpersec{job="kafka"}[5m]))) by (instance) > 1000
       for: 5m
       labels:
         severity: warning
