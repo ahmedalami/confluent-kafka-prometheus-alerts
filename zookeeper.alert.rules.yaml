@@ -1,0 +1,29 @@
+groups:
+  - name: zookeeper.alerts
+    rules:
+      - alert: AvgRequestLatency
+        expr: zookeeper_avgrequestlatency > 10
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Zookeeper :: {{ $labels.instance }} :: {{ $value }} average request latency'
+          description: 'The average request latency is {{ $value }} on {{ $labels.instance }}'
+
+      - alert: OutstandingRequests
+        expr: zookeeper_outstandingrequests > 10
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Zookeeper :: {{ $labels.instance }} :: Outstanding requests'
+          description: 'There are {{ $value }} outstanding requests on {{ $labels.instance }}'
+
+      - alert: Zookeeper is slow
+        expr: max_over_time(zookeeper_MaxRequestLatency[1m]) > 10000
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Zookeeper :: {{ $labels.instance }} :: High latency'
+          description: 'Zookeeper latency is {{ $value }}ms (aggregated over 1m) on {{ $labels.instance }}. When Zookeeper is running slow leader election and replication process can fail.'
